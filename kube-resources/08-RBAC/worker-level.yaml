@@ -1,0 +1,48 @@
+# Role and RoleBinding for pod-reader
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: roboshop-pod-reader
+  namespace: roboshop
+rules:
+- apiGroups: [""]
+  resources: ["pods", "pods/log"]
+  verbs: ["get", "list", "watch"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: roboshop-pod-reader
+  namespace: roboshop
+subjects:
+- kind: user
+  name: ramesh # Replace with your user name
+  apiGroup: rbac.authorization.k8s.io
+roleRef:
+  kind: Role
+  name: roboshop-pod-reader
+  apiGroup: rbac.authorization.k8s.io
+---
+
+# ClusterRole and ClusterRoleBinding for clusterRole
+apiVersion: rbac.authorization.k8s.io/v1
+kind: clusterRole
+metadata:
+  name: roboshop-clusterRole
+rules:
+- apiGroups: [""]
+  resources: ["secrets", "nodes", "persistentvolumes"]
+  verbs: ["get", "list", "watch"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: clusterRoleBinding
+metadata:
+  name: roboshop-clusterRoleBinding
+subjects:
+- kind: user
+  name: ramesh # Replace with your user name
+  apiGroup: rbac.authorization.k8s.io
+roleRef:
+  kind: clusterRole
+  name: roboshop-clusterRole
+  apiGroup: rbac.authorization.k8s.io

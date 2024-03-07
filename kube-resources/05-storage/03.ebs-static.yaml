@@ -1,0 +1,60 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: ebs-static-pv
+spec:
+  capacity:
+    storage: 10Gi
+  volumeMode: Filesystem
+  accessModes:
+    - ReadWriteOnce 
+  csi: # EBS CSI (Container Storage Interface) Driver 
+    driver: ebs.csi.aws.com
+    volumeHandle: vol-0a8f7e7f7f6d7f7f7 # EBS Volume ID
+    volumeAttributes:
+      type: gp2 
+      fsType: ext4 
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: ebs-static-pvc
+spec:
+  storageClassName: "" # Empty string to use the default storage class
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 5Gi
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: ebs-static-pod
+spec:
+  containers:
+  - name: ebs-static-container
+    image: nginx
+    volumeMounts:
+    - mountPath: /usr/share/nginx/html
+      name: nginx-data
+    nodeSelector:
+      zone: us-east-1a # Node Selector
+  volumes:
+  - name: nginx-data
+    persistentVolumeClaim:
+      claimName: ebs-static-pvc
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ebs-static-service
+spec:
+  selector:
+    app: ebs-static-pod
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
+  type: LoadBalancer
+---

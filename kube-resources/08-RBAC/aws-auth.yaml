@@ -1,0 +1,29 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: aws-auth
+  namespace: kube-system
+  uid: c545fed5-5d66-41bb-be7b-13e318a33fd2
+data:
+  mapRoles: |
+    - rolearn: arn:aws:eks:us-east-1:123456789012:cluster/roboshop-cluster-nodegroup-Node 
+      username: system:node:{{EC2PrivateDNSName}}
+      groups:
+        - system:bootstrappers
+        - system:nodes
+  mapUsers: |
+    - groups:
+      - roboshop-pod-reader 
+      userarn: arn:aws:iam::123456789012:user/ramesh 
+      username: ramesh
+    - groups:
+      - roboshop-cluster-admin 
+      userarn: arn:aws:iam::123456789012:user/suresh 
+      username: suresh   
+    
+---
+
+# Replace roleArn with your node role ARN under mapRoles section rolearn (look at RBAC.md file for more details)
+
+# groups under mapUsers section are in worker-level.yaml and admin-level.yaml files 
+# Replace with your IAM user ARN under mapUsers section userarn

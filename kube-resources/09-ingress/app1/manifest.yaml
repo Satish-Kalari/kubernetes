@@ -1,0 +1,69 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: app1
+  labels: # these labels are deployment labels
+    app: app1
+spec:
+  replicas: 1
+  selector:
+    matchLabels: # these labels are used to find the pods
+      app: app1
+  template:
+    metadata:
+      labels: # these labels are pod labels
+        app: app1
+    spec:
+      containers:
+      - name: app1
+        image: satishkalari/app1:v1
+        imagePullPolicy: Always
+        resources:
+          requests:
+            cpu: "50m"
+            memory: "128Mi"
+          limits:
+            cpu: "100m"
+            memory: "256Mi"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: app1
+spec:
+  selector:
+    app: app1
+  ports:
+  - protocol: TCP
+    port: 80 #service-port
+    targetPort: 80 #container-port
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: app1
+  annotations: # these are used to configure the ALB in aws
+    alb.ingress.kubernetes.io/scheme: internet-facing
+    alb.ingress.kubernetes.io/target-type: ip
+    alb.ingress.kubernetes.io/tags: Environment=dev,Team=test,Project=Roboshop
+    alb.ingress.kubernetes.io/group.name: projoy # this is used to group the resources (instead of creating a new ALB for each ingress, we can group them and use the same ALB for multiple ingresses)
+spec:
+  ingressClassName: alb
+  rules:
+  - host: "app1.projoy.store"
+    http:
+      paths:
+      - pathType: Prefix # this is used to match the path
+        path: "/" # this is the path
+        backend:
+          service:
+            name: app1
+            port:
+              number: 80
+
+# labels vs annotations
+# Labels are used to organize resources and are used to select resources to apply operations to. 
+# Annotations are used to store non-identifying information that can be used by operators or other tools.
+# Labels are used to select and group resources. Annotations are used to store non-identifying information that can be used by operators or other tools.
+
+# kubectl apply -f app1/manifest.yaml

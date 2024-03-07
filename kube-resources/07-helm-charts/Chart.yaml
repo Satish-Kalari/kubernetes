@@ -1,0 +1,8 @@
+apiVersion: v1
+name: nginx
+version: 1.0.0 # Version of the Chart
+description: A Helm chart for nginx Kubernetes
+appVersion: 1.0.0 # The version of the app that this contains
+
+# q: What is the purpose of the Chart.yaml file?
+# a: The Chart.yaml file contains the metadata for the chart. This file is required.

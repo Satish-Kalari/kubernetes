@@ -1,0 +1,13 @@
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: efs-sc
+provisioner: efs.csi.aws.com # EFS CSI Driver
+volumeBindingMode: WaitForFirstConsumer
+parameters:
+  provisioningMode: efs-ap # EFS Provisioner Mode
+  fileSystemId: fs-0a8f7e7f7f6d7f7f7 # EFS File System ID
+  directoryPerms: "777" # Directory Permissions
+  gidRange: "1000-2000" # optional, default is "1000-2000"
+  region: us-east-1 # optional, default is the region of the EKS cluster
+  bashPath: "/roboshop" # optional, default is "/"

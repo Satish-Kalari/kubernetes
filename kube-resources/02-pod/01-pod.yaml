@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: hello-pod
+  namespace: roboshop
+  labels:
+    app: hello
+spec:
+  containers:
+  - name: hello-container
+    image: nginx
+    ports:
+    - containerPort: 80
+
+# kubectl apply -f 01-pod.yaml # create pod in roboshop namespace
+# kubectl get pods # get pods in default namespace
+# kubectl get pods -n roboshop # get pods in roboshop namespace
+# kubectl describe pod hello-pod -n roboshop # describe pod in roboshop namespace
+
+
+# kubectl delete pod hello-pod -n roboshop # command to delete pod in roboshop namespace

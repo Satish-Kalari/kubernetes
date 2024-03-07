@@ -1,0 +1,28 @@
+apiVersion:
+kind: pod
+metadata:
+  name: nginx-lb
+  labels:
+    app: nginx-lb
+    demo: service
+spec:
+  container:
+  - name: nginx-lb
+    image: nginx
+    port:
+    - containerPort: 80 # this for just information
+---
+
+apiVersion:
+kind: service
+metadata:
+  name: nginx-lb
+spec:
+  type: LoadBalancer
+  selector: 
+    app: nginx-lb
+    demo: service
+  ports:
+  - protocol: TCP 
+    port: 80 # service-port
+    targetPort: 80 # container-port 

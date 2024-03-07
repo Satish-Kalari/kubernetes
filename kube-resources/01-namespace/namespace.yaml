@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: roboshop
+  
+# kubectl apply -f namespace.yaml # create namespace <-- can use repeatedly to update
+# kubectl create -f namespace.yaml # create namespace <-- cant use repeatedly
+# kubectl get ns # to find existing namespace
+# kubectl delete ns roboshop # delete namespace named roboshop 
+# kubectl delete -f namespace.yaml # delete all namespace mentioned in namespace.yaml file

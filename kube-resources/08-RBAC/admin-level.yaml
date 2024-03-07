@@ -1,0 +1,53 @@
+# Create a Role and RoleBinding for the user suresh in the namespace roboshop with full access to all resources and verbs.
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: roboshop-admin
+  namespace: roboshop
+rules:
+- apiGroups: ["*"] # "" for core API group
+  resources: ["*"]
+  verbs: ["*"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: roboshop-admin
+  namespace: roboshop
+subjects:
+- kind: User
+  name: suresh # Replace with your user name
+  apiGroup: rbac.authorization.k8s.io
+roleRef: 
+  kind: Role
+  name: roboshop-admin
+  apiGroup: rbac.authorization.k8s.io
+
+---
+# Create a ClusterRole and ClusterRoleBinding for the user suresh with full access to all resources and verbs.
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: roboshop-cluster-admin
+rules:
+- apiGroups: [""]
+  resources: ["*"]
+  verbs: ["*"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: roboshop-cluster-admin
+subjects:
+- kind: User
+  name: suresh # Replace with your user name
+  apiGroup: rbac.authorization.k8s.io
+roleRef:
+  kind: ClusterRole
+  name: roboshop-cluster-admin
+  apiGroup: rbac.authorization.k8s.io
+  
+
+
+# all verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
+# all resources: ["pods", "pods/log", "services", "deployments", "replicasets", "statefulsets", "configmaps", "secrets", "ingresses", "persistentvolumeclaims", "persistentvolumes", "jobs", "cronjobs"]

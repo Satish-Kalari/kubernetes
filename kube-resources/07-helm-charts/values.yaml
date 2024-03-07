@@ -1,0 +1,6 @@
+deployment:
+  replicas: 3
+  imageVersion: mainline-alpine.18-perl
+
+# q: What is the purpose of the values.yaml file?
+# a: The values.yaml file contains the default values for the chart. This file is required.

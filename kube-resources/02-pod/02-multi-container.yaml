@@ -1,0 +1,25 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: multi-container 
+  
+spec:
+  containers:
+  - name: container-nginx
+    image: nginx
+    ports:
+    - containerPort: 80
+  - name: container-almalinux
+    image: almalinux:8
+    command: ["sleep", "300"]
+
+# command to run this pod
+# kubectl apply -f 02-multi-container.yaml
+
+# command to log into container
+# kubectl exec -it multi-container -c container-almalinux -- /bin/bash
+
+# what is sidecar container? 
+# A sidecar container is a helper container that runs alongside the main container in a pod. 
+# It is a design pattern that is used to extend the functionality of the main container. 
+

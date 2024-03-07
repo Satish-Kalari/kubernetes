@@ -1,0 +1,23 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: annotations
+  labels:
+    course : DevOps
+    trainer : "JohnDoe"
+  annotations:
+    owner: "John Doe"
+    description: "This is a sample pod with annotations"
+    jenkins.url: "http://jenkins.com"
+spec:
+  containers:
+  - name: nginx
+    image: nginx
+    ports:
+    - containerPort: 80
+
+# command to run this pod
+# kubectl apply -f 04-annotations.yaml
+
+# there should not be any space in multi-word label values
+# space is allowed in annotation values

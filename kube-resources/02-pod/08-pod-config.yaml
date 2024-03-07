@@ -1,0 +1,56 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod-config
+spec:
+  containers:
+  - name: nginx-container
+    image: nginx
+    ports:
+    - containerPort: 80
+    env:
+    - name: course
+      valueFrom:
+        configMapKeyRef:
+        name: devops-config
+        key: course   
+    - name: trainer
+      valueFrom:
+        configMapKeyRef:
+        name: devops-config
+        key: trainer
+
+# first create configmap
+# kubectl apply -f 07-configmap.yaml
+
+# to run this pod
+# kubectl apply -f 08-pod-config.yaml
+
+# kubectl get pods
+# kubectl describe pod pod-config
+
+# kubectl exec -it pod-config -- /bin/bash
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: pod-config-1
+data:
+  course: devops
+  trainer: naveen
+spec:
+  containers:
+  - name: nginx-container
+    image: nginx
+    ports:
+    - containerPort: 80
+    envFrom:
+    - configMapRef:
+      name: devops-config
+
+# env vs envfrom
+# env - to pass single key value pair
+# envFrom - to pass multiple key value pair
+
+
+
